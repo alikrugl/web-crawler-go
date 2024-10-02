@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"sort"
 )
 
 func (cfg *config) crawlPage(rawCurrentURL string) {
@@ -56,5 +57,35 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 	for _, nextURL := range nextURLs {
 		cfg.wg.Add(1)
 		go cfg.crawlPage(nextURL)
+	}
+}
+
+type pageReport struct {
+	url   string
+	count int
+}
+
+func printReport(pages map[string]int, baseURL string) {
+	fmt.Println("=============================")
+	fmt.Printf("  REPORT for %s\n", baseURL)
+	fmt.Println("=============================")
+
+	// Convert map to slice of structs
+	var report []pageReport
+	for url, count := range pages {
+		report = append(report, pageReport{url, count})
+	}
+
+	// Sort the slice
+	sort.Slice(report, func(i, j int) bool {
+		if report[i].count == report[j].count {
+			return report[i].url < report[j].url
+		}
+		return report[i].count > report[j].count
+	})
+
+	// Print the sorted report
+	for _, entry := range report {
+		fmt.Printf("Found %d internal links to %s\n", entry.count, entry.url)
 	}
 }
