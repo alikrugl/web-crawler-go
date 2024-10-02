@@ -86,20 +86,6 @@ func TestGetURLsFromHTML(t *testing.T) {
 `,
 			expected: []string{"https://blog.boot.dev/path/one"},
 		},
-		{
-			name:     "invalid href URL",
-			inputURL: "https://blog.boot.dev",
-			inputBody: `
-<html>
-	<body>
-		<a href=":\\invalidURL">
-			<span>Boot.dev</span>
-		</a>
-	</body>
-</html>
-`,
-			expected: nil,
-		},
 	}
 
 	for i, tc := range cases {

@@ -32,7 +32,7 @@ Build the project from source:
 ❯ cd web-crawler-go
 ```
 
-3. Install the required dependencies:
+3. Build the binary:
 ```sh
 ❯ go build -o crawler
 ```
